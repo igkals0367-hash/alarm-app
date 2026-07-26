@@ -28,6 +28,14 @@ function App() {
     setAlarms(alarms.filter((alarm) => alarm.id !== id))
   }
 
+  function toggleAlarm(id: string) {
+    setAlarms(
+      alarms.map((alarm) => 
+        alarm.id === id ? { ...alarm, enabled: !alarm.enabled } : alarm
+      )
+    )
+  }
+
 
 
   return (
@@ -52,7 +60,12 @@ function App() {
       <ul>
         {alarms.map((alarm) => (
           <li key={alarm.id}>
-            {alarm.time} - {alarm.label} - {alarm.enabled ? 'On' : 'Off'}
+            <input
+              type="checkbox"
+              checked={alarm.enabled}
+              onChange={() => toggleAlarm(alarm.id)}
+            />
+            {alarm.time} - {alarm.label}  
             <button onClick={() => deleteAlarm(alarm.id)}>Delete</button>
           </li>
         ))}
