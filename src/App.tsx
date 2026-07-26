@@ -24,6 +24,12 @@ function App() {
     setLabel('')
   }
 
+  function deleteAlarm(id: string) {
+    setAlarms(alarms.filter((alarm) => alarm.id !== id))
+  }
+
+
+
   return (
     <div>
       <h1>Alarm Clock</h1>
@@ -42,11 +48,12 @@ function App() {
         />
         <button onClick={addAlarm}>Add alarm</button>
       </div>
-      
+
       <ul>
         {alarms.map((alarm) => (
           <li key={alarm.id}>
             {alarm.time} - {alarm.label} - {alarm.enabled ? 'On' : 'Off'}
+            <button onClick={() => deleteAlarm(alarm.id)}>Delete</button>
           </li>
         ))}
       </ul>
