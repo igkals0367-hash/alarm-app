@@ -37,10 +37,18 @@ function App() {
       label: label,
       enabled: true,
     }
-    await db.put(newAlarm)
-    loadAlarms()
-    setTime('')
-    setLabel('')
+
+    try{
+      await db.put(newAlarm)
+      loadAlarms()
+      setTime('')
+      setLabel('')
+    } catch (err) {
+      setError('Could not save the alarm')
+      console.error('Failed to save alarm', err)
+    }
+    
+
   }
 
   async function deleteAlarm(alarm: Alarm) {
