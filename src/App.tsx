@@ -34,16 +34,14 @@ function App() {
     setLabel('')
   }
 
-  function deleteAlarm(id: string) {
-    setAlarms(alarms.filter((alarm) => alarm._id !== id))
+  async function deleteAlarm(alarm: Alarm) {
+    await db.remove(alarm._id, alarm._rev!)
+    loadAlarms()
   }
 
-  function toggleAlarm(id: string) {
-    setAlarms(
-      alarms.map((alarm) => 
-        alarm._id === id ? { ...alarm, enabled: !alarm.enabled } : alarm
-      )
-    )
+  async function toggleAlarm(alarm: Alarm) {
+    await db.put({...alarm, enabled: !alarm.enabled})
+    loadAlarms()
   }
 
 
@@ -72,10 +70,10 @@ function App() {
             <input
               type="checkbox"
               checked={alarm.enabled}
-              onChange={() => toggleAlarm(alarm._id)}
+              onChange={() => toggleAlarm(alarm)}
             />
             {alarm.time} - {alarm.label}  
-            <button onClick={() => deleteAlarm(alarm._id)}>Delete</button>
+            <button onClick={() => deleteAlarm(alarm)}>Delete</button>
           </li>
         ))}
       </ul>
