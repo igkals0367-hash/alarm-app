@@ -1,16 +1,23 @@
 import { useState } from 'react'
 import './App.css'
 import type { Alarm } from './types'
+import { db } from './db'
 
 
 function App() {
-  const [alarms, setAlarms] = useState<Alarm[]>([
-  { _id: '1', time: '07:00', label: 'Wake up', enabled: true },
-  { _id: '2', time: '08:30', label: 'Leave for work', enabled: false }
-  ])
 
+  const [alarms, setAlarms] = useState<Alarm[]>([])
   const [time, setTime] = useState('')
   const [label, setLabel] = useState('')
+
+  useEffect(() => {
+    async function loadAlarms() {
+      const result = await db.allDocs({ include_doc:true })
+      const loaded = result.rows.map((row) => row.doc as Alarm)
+      setAlarms(loaded)
+    }
+    loadAlarms()
+    }, [])
 
   function addAlarm() {
     const newAlarm: Alarm = {
