@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import type { Alarm } from './types'
 import { db } from './db'
+import { sortAlarmsByTime  } from './alarmUtils'
 
 
 function App() {
@@ -14,8 +15,7 @@ function App() {
   async function loadAlarms() {
       const result = await db.allDocs({ include_docs:true })
       const loaded = result.rows.map((row) => row.doc as Alarm)
-      loaded.sort((a,b) => a.time.localeCompare(b.time))
-      setAlarms(loaded)
+      setAlarms(sortAlarmsByTime(loaded))
     }
 
   useEffect(() => {
