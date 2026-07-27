@@ -5,8 +5,8 @@ import type { Alarm } from './types'
 
 function App() {
   const [alarms, setAlarms] = useState<Alarm[]>([
-  { id: '1', time: '07:00', label: 'Wake up', enabled: true },
-  { id: '2', time: '08:30', label: 'Leave for work', enabled: false }
+  { _id: '1', time: '07:00', label: 'Wake up', enabled: true },
+  { _id: '2', time: '08:30', label: 'Leave for work', enabled: false }
   ])
 
   const [time, setTime] = useState('')
@@ -14,7 +14,7 @@ function App() {
 
   function addAlarm() {
     const newAlarm: Alarm = {
-      id: crypto.randomUUID(),
+      _id: crypto.randomUUID(),
       time: time,
       label: label,
       enabled: true,
@@ -25,13 +25,13 @@ function App() {
   }
 
   function deleteAlarm(id: string) {
-    setAlarms(alarms.filter((alarm) => alarm.id !== id))
+    setAlarms(alarms.filter((alarm) => alarm._id !== id))
   }
 
   function toggleAlarm(id: string) {
     setAlarms(
       alarms.map((alarm) => 
-        alarm.id === id ? { ...alarm, enabled: !alarm.enabled } : alarm
+        alarm._id === id ? { ...alarm, enabled: !alarm.enabled } : alarm
       )
     )
   }
@@ -58,14 +58,14 @@ function App() {
 
       <ul>
         {alarms.map((alarm) => (
-          <li key={alarm.id}>
+          <li key={alarm._id}>
             <input
               type="checkbox"
               checked={alarm.enabled}
-              onChange={() => toggleAlarm(alarm.id)}
+              onChange={() => toggleAlarm(alarm._id)}
             />
             {alarm.time} - {alarm.label}  
-            <button onClick={() => deleteAlarm(alarm.id)}>Delete</button>
+            <button onClick={() => deleteAlarm(alarm._id)}>Delete</button>
           </li>
         ))}
       </ul>

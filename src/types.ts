@@ -1,6 +1,6 @@
 export type Alarm = {
-    id: string
+    _id: string
     time: string
     label: string
-    enable: boolean
+    enabled: boolean
 }
