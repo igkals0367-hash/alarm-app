@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import type { Alarm } from './types'
 import { db } from './db'
-import { sortAlarmsByTime  } from './alarmUtils'
+import { sortAlarmsByTime, isValidAlarmInput  } from './alarmUtils'
 
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
   const [alarms, setAlarms] = useState<Alarm[]>([])
   const [time, setTime] = useState('')
   const [label, setLabel] = useState('')
+  const [error, setError] = useState('')
 
 
   async function loadAlarms() {
@@ -24,8 +25,11 @@ function App() {
 
   async function addAlarm() {
     if (!isValidAlarmInput(time, label)) {
+      setError('Please enter both time and label')
       return
     }
+
+    setError('')
 
     const newAlarm: Alarm = {
       _id: crypto.randomUUID(),
@@ -67,6 +71,7 @@ function App() {
           onChange={(e) => setLabel(e.target.value)}
         />
         <button onClick={addAlarm}>Add alarm</button>
+        {error && <p style={{ color: 'red'}}>{error}</p>}
       </div>
 
       <ul>
