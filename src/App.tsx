@@ -10,23 +10,26 @@ function App() {
   const [time, setTime] = useState('')
   const [label, setLabel] = useState('')
 
-  useEffect(() => {
-    async function loadAlarms() {
-      const result = await db.allDocs({ include_doc:true })
+
+  async function loadAlarms() {
+      const result = await db.allDocs({ include_docs:true })
       const loaded = result.rows.map((row) => row.doc as Alarm)
       setAlarms(loaded)
     }
-    loadAlarms()
-    }, [])
 
-  function addAlarm() {
+  useEffect(() => {
+    loadAlarms()
+  }, [])
+
+  async function addAlarm() {
     const newAlarm: Alarm = {
       _id: crypto.randomUUID(),
       time: time,
       label: label,
       enabled: true,
     }
-    setAlarms([...alarms, newAlarm])
+    await db.put(newAlarm)
+    loadAlarms()
     setTime('')
     setLabel('')
   }
