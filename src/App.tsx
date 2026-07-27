@@ -23,6 +23,10 @@ function App() {
   }, [])
 
   async function addAlarm() {
+    if (!isValidAlarmInput(time, label)) {
+      return
+    }
+
     const newAlarm: Alarm = {
       _id: crypto.randomUUID(),
       time: time,
