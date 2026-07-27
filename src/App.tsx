@@ -14,6 +14,7 @@ function App() {
   async function loadAlarms() {
       const result = await db.allDocs({ include_docs:true })
       const loaded = result.rows.map((row) => row.doc as Alarm)
+      loaded.sort((a,b) => a.time.localeCompare(b.time))
       setAlarms(loaded)
     }
 
