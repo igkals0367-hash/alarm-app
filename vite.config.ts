@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
@@ -8,4 +8,5 @@ export default defineConfig({
     react(),
     nodePolyfills(),
   ],
+  test: {include: ['src/**/*.test.ts'],},
 })
