@@ -3,6 +3,7 @@ import './App.css'
 import type { Alarm } from './types'
 import { db } from './db'
 import { sortAlarmsByTime, isValidAlarmInput  } from './alarmUtils'
+import { LocalNotifications } from '@capacitor/local-notifications'
 
 
 function App() {
@@ -21,6 +22,18 @@ function App() {
 
   useEffect(() => {
     loadAlarms()
+  }, [])
+
+  useEffect(() => {
+    async function requestPermission() {
+      try {
+        const result = await LocalNotifications.requestPermissions()
+        console.log('Notification Permission:', result.display)
+      } catch (err) {
+        console.log('Notification not available', err)
+      }
+    }
+    requestPermission()
   }, [])
 
   async function addAlarm() {
