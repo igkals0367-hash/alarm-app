@@ -12,6 +12,7 @@ function App() {
   const [time, setTime] = useState('')
   const [label, setLabel] = useState('')
   const [error, setError] = useState('')
+  const[search, setSearch] = useState('')
 
 
   async function loadAlarms() {
@@ -84,6 +85,8 @@ function App() {
     loadAlarms()
   }
 
+  const searchResult = alarms.filter((alarm) => alarm.label.toLowerCase().includes(search.toLocaleLowerCase()))
+
 
   return (
     <div>
@@ -106,7 +109,13 @@ function App() {
       </div>
 
       <ul>
-        {alarms.map((alarm) => (
+        <input
+          type='text'
+          placeholder='text'
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        {searchResult.map((alarm) => (
           <li key={alarm._id}>
             <input
               type="checkbox"
