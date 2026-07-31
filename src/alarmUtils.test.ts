@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { sortAlarmsByTime, isValidAlarmInput  } from './alarmUtils'
+import { sortAlarmsByTime, isValidAlarmInput, nextOccurence  } from './alarmUtils'
 import type { Alarm } from './types'
 
 describe("sortAlarmsbyTime", () => {
@@ -33,5 +33,19 @@ describe('isValidAlarmInput', () => {
 
     it('rejects a label of only spaces', () => {
         expect(isValidAlarmInput('07:00', '   ')).toBe(false)
+    })
+})
+
+describe('nextOccurence', () => {
+    it('uses today when the time is still ahead', () => {
+        const now = new Date('2026-07-31T18:00:00')
+        const result = nextOccurence('19:30', now)
+        expect(result.getDate()).toBe(31)
+    })
+
+    it('uses tomorrow when the time is already passed', () => {
+        const now = new Date('2026-07-31T21:00:00')
+        const result = nextOccurence('19:30', now)
+        expect(result.getDate()).toBe(1)
     })
 })

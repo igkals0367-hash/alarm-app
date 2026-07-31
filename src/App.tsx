@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import type { Alarm } from './types'
 import { db } from './db'
-import { sortAlarmsByTime, isValidAlarmInput  } from './alarmUtils'
+import { sortAlarmsByTime, isValidAlarmInput, nextOccurence  } from './alarmUtils'
 import { LocalNotifications } from '@capacitor/local-notifications'
 
 
@@ -53,6 +53,16 @@ function App() {
 
     try{
       await db.put(newAlarm)
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            id: Math.floor(Math.random() * 100000),
+            title: 'Alarm',
+            body: label,
+            schedule: { at: nextOccurence(time)}, 
+          }
+        ]
+      })
       loadAlarms()
       setTime('')
       setLabel('')
